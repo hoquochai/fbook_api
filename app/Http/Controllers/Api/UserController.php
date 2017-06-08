@@ -65,4 +65,13 @@ class UserController extends ApiController
             $this->compacts['items'] = $this->reFormatPaginate($data);
         });
     }
+
+    public function read()
+    {
+        return $this->getData(function () {
+            $data = $this->repository->getBooksReadByUser($this->bookSelect, $this->relations);
+
+            $this->compacts['items'] = $this->reFormatPaginate($data);
+        });
+    }
 }

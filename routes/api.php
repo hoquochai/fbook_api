@@ -39,6 +39,7 @@ Route::group(['prefix' => 'v0', 'as' => 'api.v0.', 'namespace' => 'Api'], functi
     Route::group(['middleware' => 'fapi'], function () {
         Route::resource('user', 'UserController');
         Route::get('users/book-reading', ['as' => 'users.bookReading', 'uses' => 'UserController@reading']);
+        Route::get('users/read-book', ['as' => 'users.readBook', 'uses' => 'UserController@read']);
         Route::post('books/review/{book_id}', ['as' => 'books.review', 'uses' => 'BookController@review']);
         Route::post('books/booking/{book_id}', ['as' => 'books.booking', 'uses' => 'BookController@booking']);
         Route::resource('books', 'BookController', [
