@@ -15,7 +15,7 @@ class UserRepositoryEloquent extends AbstractRepositoryEloquent implements UserR
     {
         $userInDatabase = $this->model()->whereEmail($userFromAuthServer['email'])->first();
         $currentUser = $userInDatabase;
-        
+
         if (!count($userInDatabase)) {
             $currentUser = $this->model()->create([
                 'name' => $userFromAuthServer['name'],
@@ -24,5 +24,21 @@ class UserRepositoryEloquent extends AbstractRepositoryEloquent implements UserR
         }
 
         return $currentUser;
+    }
+
+    public function getMyWaitingBook($select = ['*'], $with = [])
+    {
+        return $this->getDataBookOfUser(config('model.book_user.status.waiting'), $select = ['*'], $with = []);
+    }
+
+    protected function getDataBookOfUser($status, $select = ['*'], $with = [])
+    {
+        if (in_array($status, array_values(config('model.book_user.status')))) {
+            return $this->user->books()
+                ->select($select)
+                ->with($with)
+                ->wherePivot('status', $status)
+                ->paginate(config('paginate.default'));
+        }
     }
 }
